@@ -4,6 +4,8 @@ import useAuthStore  from  "../src/store/store"
 
 import LoginPage from '../src/pages/LoginPage'
 import HomePage from '../src/pages/HomePage'
+import { LogIn } from 'lucide-react';
+import Navigation from './components/Navigations';
 // Main App Component
 const App = () => {
   const { currentPage, isAuthenticated } = useAuthStore();

@@ -1,20 +1,21 @@
-import { ChefHat } from "lucide-react";
+import { Bell, BookOpen, ChefHat, Heart, Home, Info, LogIn, Search, Users } from "lucide-react";
 
 
 // Navigation Component
 const Navigation = ({ currentPage, onPageChange }) => {
   const navItems = [
     { id: 'home', label: 'Home', icon: Home },
-    { id: 'recipes', label: 'Recipes', icon: BookOpen },
-    { id: 'community', label: 'Community', icon: Users },
+    { id: 'recipes', label: 'Categories', icon: BookOpen },
+    { id: 'community', label: 'Favorites', icon: Users },
     { id: 'about', label: 'About', icon: Info },
-    { id: 'login', label: 'Login', icon: LogIn }
   ];
 
   return (
-    <nav className="bg-white shadow-sm border-b">
+    <nav className="bg-white shadow-lg  border-b-1 border-b-[#E5E8EB]">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between">
+
+        <div className="flex  space-x-8 items-center h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <ChefHat className="h-8 w-8 text-red-500" />
@@ -22,27 +23,36 @@ const Navigation = ({ currentPage, onPageChange }) => {
           </div>
           
           {/* Navigation Links */}
-          <div className="flex space-x-8">
+          <div className="flex space-x-8 ">
             {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => onPageChange(item.id)}
-                  className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                    currentPage === item.id
-                      ? 'text-red-600 bg-red-50'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                  }`}
-                >
-                  <Icon className="h-4 w-4" />
-                  <span>{item.label}</span>
-                </button>
-              );
+                const Icon = item.icon;
+                return (
+                    
+                    <h2 className="text-black cursor-pointer">{item.label}</h2>
+                );
             })}
           </div>
+
+          
         </div>
+
+        <div className="flex space-x-8  items-center h-16">
+            <div className="bg-[#F5F0F0] rounded-md flex items-center h-[30px]">
+                <Search height={15} />
+                <input className="placeholder:text-sm pl-2 border-0 focus:border-0 focus:ring-0 outline-none" placeholder="Search ..."/>
+            </div>
+            <div className="h-[30px] w-[30px] cursor-pointer rounded-md bg-[#F5F0F0] items-center place-content-center place-items-center">
+            <Bell height={15} />
+
+            </div>
+            <div className="h-[30px] w-[30px] rounded-full bg-[#F5F0F0] cursor-pointer">
+                
+            </div>
+          </div>
       </div>
+            </div>
     </nav>
   );
 };
+
+export default Navigation;
