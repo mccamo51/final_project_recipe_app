@@ -28,7 +28,9 @@ const Navigation = ({ currentPage, onPageChange }) => {
                 const Icon = item.icon;
                 return (
                     
-                    <h2 className="text-black cursor-pointer">{item.label}</h2>
+                    <h2 className="text-black cursor-pointer"
+                     onClick={() => onPageChange(item.id)}
+                    >{item.label}</h2>
                 );
             })}
           </div>

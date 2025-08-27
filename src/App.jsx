@@ -1,11 +1,13 @@
 
 import './App.css'
-import useAuthStore  from  "../src/store/store"
+import useAuthStore from "../src/store/store"
 
 import LoginPage from '../src/pages/LoginPage'
 import HomePage from '../src/pages/HomePage'
 import { LogIn } from 'lucide-react';
 import Navigation from './components/Navigations';
+import FavoritePage from './pages/FavoritePage';
+import RecipesPage from './pages/RecipeDetails';
 // Main App Component
 const App = () => {
   const { currentPage, isAuthenticated } = useAuthStore();
@@ -16,10 +18,10 @@ const App = () => {
   };
 
   const handleLogout = () => {
-    setState({ 
-      user: null, 
-      isAuthenticated: false, 
-      currentPage: 'login' 
+    setState({
+      user: null,
+      isAuthenticated: false,
+      currentPage: 'login'
     });
   };
 
@@ -35,13 +37,7 @@ const App = () => {
         return <RecipesPage />;
       case 'community':
         return (
-          <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-            <div className="text-center">
-              <Users className="h-24 w-24 text-gray-400 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Community Page</h2>
-              <p className="text-gray-600">Coming soon! Connect with fellow food enthusiasts.</p>
-            </div>
-          </div>
+          <FavoritePage />
         );
       case 'about':
         return (
@@ -50,7 +46,7 @@ const App = () => {
               <Info className="h-24 w-24 text-gray-400 mx-auto mb-4" />
               <h2 className="text-2xl font-bold text-gray-900 mb-2">About Recipe Finder</h2>
               <p className="text-gray-600">
-                Recipe Finder is your ultimate destination for discovering, sharing, and enjoying 
+                Recipe Finder is your ultimate destination for discovering, sharing, and enjoying
                 incredible recipes from around the world. Join our community of food lovers today!
               </p>
             </div>
