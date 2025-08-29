@@ -43,37 +43,26 @@ function FavoritePage() {
 
 
   return (
-          <div className='px-12 pt-4'>
+          <div className='px-80 pt-10'>
             <h2 className="text-2xl font-bold text-gray-900 mb-6">My Saved Recipes</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-5 gap-6 ">
               {recipes.map((recipe) => (
-                <div key={recipe.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                <div key={recipe.id} className=" rounded-lg overflow-hidden hover:shadow-md transition-shadow">
                   <div className="relative">
                     <img
                       src={recipe.image}
                       alt={recipe.title}
-                      className="w-full h-48 object-cover"
+                      className="w-full h-48 object-cover rounded-xl"
                     />
-                    <button
-                      onClick={() => toggleFavorite(recipe.id)}
-                      className="absolute top-3 right-3 p-2 bg-white bg-opacity-90 rounded-full hover:bg-opacity-100 transition-all"
-                    >
-                      <Heart 
-                        className={`w-5 h-5 ${
-                          recipe.isFavorite 
-                            ? 'fill-red-500 text-red-500' 
-                            : 'text-gray-600'
-                        }`}
-                      />
-                    </button>
+                   
                   </div>
                   
-                  <div className="p-4">
+                  <div className="pt-4">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
                       {recipe.title}
                     </h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">
+                    <p className="text-[#876363] text-sm leading-relaxed">
                       {recipe.description}
                     </p>
                   </div>
