@@ -1,60 +1,97 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getMealDetails } from "../service/spoonacularApiService";
+import { useParams } from "react-router-dom";
 
-// Recipes Page Component
 const RecipesPage = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [recipes] = useState([
-    { id: 1, title: 'Spaghetti Carbonara', time: '20 min', difficulty: 'Easy', image: '🍝' },
-    { id: 2, title: 'Chicken Tikka Masala', time: '45 min', difficulty: 'Medium', image: '🍛' },
-    { id: 3, title: 'Chocolate Chip Cookies', time: '30 min', difficulty: 'Easy', image: '🍪' },
-    { id: 4, title: 'Beef Wellington', time: '2 hours', difficulty: 'Hard', image: '🥩' },
-  ]);
+  const { id } = useParams();
+  const [recipe, setMeal] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  const filteredRecipes = recipes.filter(recipe =>
-    recipe.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    async function fetchData() {
+      const meal = await getMealDetails(id);
+      if (meal) {
+        setMeal(meal);
+      }
+      setLoading(false);
+    }
+
+    fetchData();
+  }, [id]);
+
+  const renderIngredients = () => {
+    return Array.from({ length: 20 }).map((_, i) => {
+      const ingredient = recipe[`strIngredient${i + 1}`];
+      const measure = recipe[`strMeasure${i + 1}`];
+
+      if (ingredient && ingredient.trim()) {
+        return (
+          <p key={i}>
+            - {ingredient} {measure && `(${measure})`}
+          </p>
+        );
+      }
+
+      return null;
+    });
+  };
+
+  if (loading) {
+    return <div className="p-6 text-center">Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Recipe Collection</h1>
-          <div className="max-w-md mx-auto">
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search recipes..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+        <div className="text-center mb-12 w-full">
+          <img
+            src={recipe.strMealThumb}
+            alt={recipe.strMeal}
+            className="w-full h-80 object-cover rounded-xl"
+          />
+        </div>
+
+        <div className="flex place-items-center justify-between flex-wrap gap-4">
+          <h1 className="font-bold text-3xl">
+            {recipe.strMeal}{" "}
+            <span className="text-xl text-orange-600">
+              ({recipe.strCategory}){" "}
+              <span className="text-black">| {recipe.strArea}</span>
+            </span>
+          </h1>
+          {recipe.strTags && (
+            <p className="font-bold">
+              Tags:{" "}
+              <span className="text-orange-600 text-xl">{recipe.strTags}</span>
+            </p>
+          )}
+        </div>
+
+        <div className="py-4">
+          <h2 className="text-2xl font-bold">Ingredients:</h2>
+          <div className="text-xl space-y-2 pt-2">{renderIngredients()}</div>
+
+          <h2 className="text-2xl font-bold pt-4">Instructions:</h2>
+          <p className="mt-2 whitespace-pre-line">{recipe.strInstructions}</p>
+        </div>
+
+        {recipe.strYoutube && (
+          <div className="mt-8">
+            <h3 className="text-xl font-semibold mb-2">Video Tutorial</h3>
+            <iframe
+              width="100%"
+              height="400"
+              src={`https://www.youtube.com/embed/${recipe.strYoutube.split("=")[1]}`}
+              title="YouTube video"
+              frameBorder="0"
+              allowFullScreen
+              className="rounded-lg"
             />
           </div>
-        </div>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredRecipes.map((recipe) => (
-            <div key={recipe.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="text-6xl text-center py-8 bg-gray-100">
-                {recipe.image}
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">{recipe.title}</h3>
-                <div className="flex justify-between text-sm text-gray-600">
-                  <span>⏱️ {recipe.time}</span>
-                  <span className={`px-2 py-1 rounded-full text-xs ${
-                    recipe.difficulty === 'Easy' ? 'bg-green-100 text-green-800' :
-                    recipe.difficulty === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-red-100 text-red-800'
-                  }`}>
-                    {recipe.difficulty}
-                  </span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default RecipesPage
+export default RecipesPage;

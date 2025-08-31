@@ -1,18 +1,26 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { getList } from '../service/spoonacularApiService';
 
 function FilterBar() {
     const [selectedFilters, setSelectedFilters] = useState([]);
+    const [filters, setFilter] = useState([])
 
-    const filters = [
-        'Vegetarian',
-        'Vegan',
-        'Gluten-Free'
-    ];
+
 
     const handleSurpriseMe = () => {
-        // Shuffle the recipes for a surprise effect
         setRecipes(prev => [...prev].sort(() => Math.random() - 0.5));
     };
+
+
+    useEffect(() => {
+        setFilter([])
+        async function fetchData() {
+            const filter = await getList("c");
+            setFilter(filter)
+        }
+        fetchData();
+    }, []);
+
     const handleFilterChange = (filter) => {
         setSelectedFilters(prev =>
             prev.includes(filter)
@@ -26,15 +34,15 @@ function FilterBar() {
             <h2 className="text-xl font-bold text-gray-900 mb-6">Filters</h2>
 
             <div className="space-y-4">
-                {filters.map((filter) => (
-                    <label key={filter} className="flex items-center space-x-3 cursor-pointer">
+                {filters.map((filter, index) => (
+                    <label key={index} className="flex items-center space-x-3 cursor-pointer">
                         <input
                             type="checkbox"
-                            checked={selectedFilters.includes(filter)}
-                            onChange={() => handleFilterChange(filter)}
+                            checked={selectedFilters.includes(filter.strCategory)}
+                            onChange={() => handleFilterChange(filter.strCategory)}
                             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                         />
-                        <span className="text-gray-700 text-sm">{filter}</span>
+                        <span className="text-gray-700 text-sm">{filter.strCategory}</span>
                     </label>
                 ))}
             </div>

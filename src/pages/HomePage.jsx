@@ -1,96 +1,71 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Search, Heart } from "lucide-react";
 import FilterBar from '../components/FilterBar';
+import SearchBar from '../components/SearchBar';
+import { getRandomMeal, searchForMeal } from '../service/spoonacularApiService';
+import { useNavigate } from 'react-router-dom';
 
-// Sample recipe data to match the design
-const sampleRecipes = [
-  {
-    id: 1,
-    title: "Classic Margherita Pizza",
-    description: "A simple and delicious pizza with fresh basil and tomatoes.",
-    image: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=400&h=300&fit=crop&crop=center",
-    isFavorite: false
-  },
-  {
-    id: 2,
-    title: "Spicy Thai Green Curry",
-    description: "A flavorful and aromatic curry with coconut milk and green chilies.",
-    image: "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400&h=300&fit=crop&crop=center",
-    isFavorite: false
-  },
-  {
-    id: 3,
-    title: "Creamy Tomato Pasta",
-    description: "A rich and creamy pasta dish with a hint of garlic.",
-    image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=300&fit=crop&crop=center",
-    isFavorite: false
-  },
-  {
-    id: 4,
-    title: "Grilled Salmon with Lemon",
-    description: "Perfectly grilled salmon fillets with a zesty lemon sauce.",
-    image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&h=300&fit=crop&crop=center",
-    isFavorite: false
-  }
-];
+
+
 
 const HomePage = () => {
-  const [recipes, setRecipes] = useState(sampleRecipes);
+
+    const navigate = useNavigate()
+  const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
- 
 
+useEffect(() => {
+  async function fetchData() {
+    const meals = await getRandomMeal("b");
+    setRecipes(meals)
+    console.log(meals); // Array of recipes
+  }
+
+  fetchData();
+}, []);
 
 
   const toggleFavorite = (recipeId) => {
     setRecipes(prev => 
       prev.map(recipe => 
-        recipe.id === recipeId 
+        recipe.idMeal === recipeId 
           ? { ...recipe, isFavorite: !recipe.isFavorite }
           : recipe
       )
     );
   };
 
-
-
   return (
     <div className="min-h-screen bg-white">
-      <div className="flex">
-        {/* Filters Sidebar */}
-        <FilterBar />
+      <div className="flex flex-col lg:flex-row">
+        <div className="lg:flex-shrink-0">
+          <FilterBar />
+        </div>
         
-        {/* Main Content */}
-        <div className="flex-1 p-6">
-          {/* Search Bar */}
-          <div className="mb-8">
-            <div className="relative max-w-md bg-[#F5F0F0] rounded-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Search for recipes or ingredients..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 placeholder:text-sm  rounded-md focus:outline-none focus:ring-0 focus:rounded-md focus:border-transparent"
-              />
-            </div>
-          </div>
+        <div className="flex-1 p-4 sm:p-6">
+          <SearchBar 
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+          />
 
-          {/* Recipes Section */}
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Recipes</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6">
-              {recipes.map((recipe) => (
-                <div key={recipe.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6">
+              {recipes.map((recipe, index) => (
+                <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                
+                onClick={()=>navigate(`/recipes/${recipe.idMeal}`)}
+                >
                   <div className="relative">
                     <img
-                      src={recipe.image}
-                      alt={recipe.title}
+                      src={recipe.strMealThumb}
+                      alt={recipe.strMeal}
                       className="w-full h-48 object-cover"
                     />
                     <button
-                      onClick={() => toggleFavorite(recipe.id)}
+                      onClick={() => toggleFavorite(recipe.idMeal)}
                       className="absolute top-3 right-3 p-2 bg-white bg-opacity-90 rounded-full hover:bg-opacity-100 transition-all"
                     >
                       <Heart 
@@ -105,10 +80,10 @@ const HomePage = () => {
                   
                   <div className="p-4">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      {recipe.title}
+                      {recipe.strMeal}
                     </h3>
                     <p className="text-gray-600 text-sm leading-relaxed">
-                      {recipe.description}
+                      {recipe.strCategory} {" -  "} {recipe.strArea}
                     </p>
                   </div>
                 </div>

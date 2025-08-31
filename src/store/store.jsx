@@ -4,7 +4,7 @@ import React, { useState } from "react";
 const useAuthStore = (() => {
   let state = {
     user: null,
-    isAuthenticated: false,
+    isAuthenticated: true,
     currentPage: 'login'
   };
   
