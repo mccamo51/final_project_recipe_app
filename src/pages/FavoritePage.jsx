@@ -1,14 +1,17 @@
 import { Heart } from 'lucide-react';
 import React, { useState } from 'react'
 import useFavoriteStore from '../store/favoriteStore';
+import { useNavigate } from 'react-router-dom';
 
 
 function FavoritePage() {
   // const [recipes, setRecipes] = useState(sampleRecipes);
-    const { favorites } = useFavoriteStore();
+  const { favorites } = useFavoriteStore();
+    const navigate = useNavigate();
 
 
-  
+
+
 
   return (
     <div className='px-4 sm:px-8 md:px-16 lg:px-32 xl:px-48 2xl:px-80 pt-10 min-h-screen bg-white'>
@@ -17,11 +20,27 @@ function FavoritePage() {
         <p>You have no favorite meals yet.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {favorites.map((meal) => (
-            <div key={meal.idMeal} className="bg-white p-4 rounded shadow">
-              <img src={meal.strMealThumb} alt={meal.strMeal} className="rounded mb-2" />
-              <h2 className="font-bold text-xl">{meal.strMeal}</h2>
-              <p className="text-sm text-gray-500">{meal.strCategory} - {meal.strArea}</p>
+          {favorites.map((recipe, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+            >
+              <div className="relative">
+                <img
+                  onClick={() => navigate(`/recipes/${recipe.idMeal}`)}
+                  src={recipe.strMealThumb}
+                  alt={recipe.strMeal}
+                  className="w-full h-48 object-cover"
+                />
+              </div>
+
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  {recipe.strMeal}
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {[recipe.strCategory, recipe.strArea].filter(Boolean).join(' - ')}                    </p>
+              </div>
             </div>
           ))}
         </div>

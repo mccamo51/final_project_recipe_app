@@ -9,19 +9,8 @@ import HomePage from '../src/pages/HomePage';
 import FavoritePage from './pages/FavoritePage';
 import RecipesPage from './pages/RecipeDetails';
 import Navigation from './components/Navigations';
+import AboutPage from './pages/AboutPage';
 
-const AboutPage = () => (
-  <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-    <div className="text-center max-w-2xl px-4">
-      <Info className="h-24 w-24 text-gray-400 mx-auto mb-4" />
-      <h2 className="text-2xl font-bold text-gray-900 mb-2">About Recipe Finder</h2>
-      <p className="text-gray-600">
-        Recipe Finder is your ultimate destination for discovering, sharing, and enjoying
-        incredible recipes from around the world. Join our community of food lovers today!
-      </p>
-    </div>
-  </div>
-);
 
 const App = () => {
   const { isAuthenticated } = useAuthStore();
@@ -46,7 +35,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/recipes/:id" element={<RecipesPage />} />
-            <Route path="/community" element={<FavoritePage />} />
+            <Route path="/favorites" element={<FavoritePage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

@@ -1,61 +1,52 @@
-import React, { useEffect, useState } from 'react'
+// src/components/FilterBar.jsx
+import React, { useEffect, useState } from 'react';
 import { getList } from '../service/spoonacularApiService';
 
-function FilterBar() {
-    const [selectedFilters, setSelectedFilters] = useState([]);
-    const [filters, setFilter] = useState([])
+function FilterBar({ onFilterSelect }) {
+  const [selectedFilter, setSelectedFilter] = useState('');
+  const [filters, setFilters] = useState([]);
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getList('c'); // list of categories
+        setFilters(data);
+      } catch (error) {
+        console.error('Failed to fetch filters:', error);
+      }
+    }
 
+    fetchData();
+  }, []);
 
-    const handleSurpriseMe = () => {
-        setRecipes(prev => [...prev].sort(() => Math.random() - 0.5));
-    };
+  const handleFilterChange = (filter) => {
+    setSelectedFilter(filter);
+    if (onFilterSelect) {
+      onFilterSelect(filter); // send selection to parent
+    }
+  };
 
+  return (
+    <div className="w-80 bg-white p-6">
+      <h2 className="text-xl font-bold text-gray-900 mb-6">Filters</h2>
 
-    useEffect(() => {
-        setFilter([])
-        async function fetchData() {
-            const filter = await getList("c");
-            setFilter(filter)
-        }
-        fetchData();
-    }, []);
-
-    const handleFilterChange = (filter) => {
-        setSelectedFilters(prev =>
-            prev.includes(filter)
-                ? prev.filter(f => f !== filter)
-                : [...prev, filter]
-        );
-    };
-
-    return (
-        <div className="w-80 bg-white p-6 ">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">Filters</h2>
-
-            <div className="space-y-4">
-                {filters.map((filter, index) => (
-                    <label key={index} className="flex items-center space-x-3 cursor-pointer">
-                        <input
-                            type="checkbox"
-                            checked={selectedFilters.includes(filter.strCategory)}
-                            onChange={() => handleFilterChange(filter.strCategory)}
-                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                        />
-                        <span className="text-gray-700 text-sm">{filter.strCategory}</span>
-                    </label>
-                ))}
-            </div>
-
-            <button
-                onClick={handleSurpriseMe}
-                className="w-full mt-8 bg-[#F5F0F0] hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-md transition-colors"
-            >
-                Surprise Me
-            </button>
-        </div>
-
-    )
+      <div className="space-y-4">
+        {filters.map((filter, index) => (
+          <label key={index} className="flex items-center space-x-3 cursor-pointer">
+            <input
+              type="radio"
+              name="category"
+              value={filter.strCategory}
+              checked={selectedFilter === filter.strCategory}
+              onChange={() => handleFilterChange(filter.strCategory)}
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+            />
+            <span className="text-gray-700 text-sm">{filter.strCategory}</span>
+          </label>
+        ))}
+      </div>
+    </div>
+  );
 }
 
-export default FilterBar
+export default FilterBar;

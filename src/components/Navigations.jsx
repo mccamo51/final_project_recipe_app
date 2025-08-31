@@ -3,8 +3,8 @@ import { Bell, BookOpen, ChefHat, Info, Search, Home, Users } from "lucide-react
 
 const navItems = [
   { id: '/', label: 'Home', icon: Home },
-  { id: '/recipes', label: 'Categories', icon: BookOpen },
-  { id: '/community', label: 'Favorites', icon: Users },
+  // { id: '/recipes', label: 'Categories', icon: BookOpen },
+  { id: '/favorites', label: 'Favorites', icon: Users },
   { id: '/about', label: 'About', icon: Info },
 ];
 
@@ -13,7 +13,7 @@ const Navigation = () => {
   const currentPath = location.pathname;
 
   return (
-    <nav className="bg-white shadow-lg border-b border-[#E5E8EB]">
+<nav className="sticky top-0 z-50 bg-white  border-b border-[#E5E8EB]">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           

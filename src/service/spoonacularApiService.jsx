@@ -60,3 +60,17 @@ export async function getList(type) {
     return null;
   }
 }
+
+
+
+export async function getMealsByCategory(category) {
+  try {
+    const res = await fetch(`${BASE_URL}/filter.php?c=${category}`);
+    const data = await res.json();
+    console.log(data)
+    return data.meals || [];
+  } catch (err) {
+    console.error('Error getting list:', err);
+    return null;
+  }
+}
