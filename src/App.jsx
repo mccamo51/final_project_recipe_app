@@ -31,7 +31,7 @@ const App = () => {
     <Router>
       <div className="min-h-screen bg-gray-50">
         <Navigation />
-        <div className="relative">
+        <div className="relative pt-16">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/recipes/:id" element={<RecipesPage />} />
