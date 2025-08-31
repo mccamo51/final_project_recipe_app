@@ -5,14 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 
 function FavoritePage() {
-  // const [recipes, setRecipes] = useState(sampleRecipes);
   const { favorites } = useFavoriteStore();
     const navigate = useNavigate();
-
-
-
-
-
   return (
     <div className='px-4 sm:px-8 md:px-16 lg:px-32 xl:px-48 2xl:px-80 pt-10 min-h-screen bg-white'>
       <h2 className="text-2xl font-bold text-gray-900 mb-6">My Saved Recipes</h2>

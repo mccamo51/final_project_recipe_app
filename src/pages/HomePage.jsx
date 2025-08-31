@@ -13,7 +13,6 @@ const HomePage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
-    // Random meals by default
     useEffect(() => {
         async function fetchRandomMeals() {
             try {
@@ -33,7 +32,6 @@ const HomePage = () => {
         }
     }, [searchTerm, selectedCategory]);
 
-    // Search meals by name
     useEffect(() => {
         if (!searchTerm.trim()) return;
 
@@ -53,7 +51,6 @@ const HomePage = () => {
         fetchSearchedMeals();
     }, [searchTerm]);
 
-    // Filter meals by category
     useEffect(() => {
         if (!selectedCategory) return;
 
