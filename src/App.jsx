@@ -3,18 +3,28 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { LogIn, Info } from 'lucide-react';
 import './App.css';
 
-import useAuthStore from "../src/store/store";
+import useAuthStore from "./store/authStore";
 import LoginPage from '../src/pages/LoginPage';
 import HomePage from '../src/pages/HomePage';
 import FavoritePage from './pages/FavoritePage';
 import RecipesPage from './pages/RecipeDetails';
 import Navigation from './components/Navigations';
 import AboutPage from './pages/AboutPage';
+import useThemeStore from './store/themeStore';
+import { useEffect } from 'react';
 
 
 const App = () => {
   const { isAuthenticated } = useAuthStore();
   const { setState } = useAuthStore;
+
+  const { initializeTheme } = useThemeStore();
+
+  useEffect(() => {
+    // Initialize theme on app startup
+    initializeTheme();
+  }, [initializeTheme]);
+
 
   const handleLogout = () => {
     setState({

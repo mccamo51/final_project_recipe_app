@@ -4,7 +4,7 @@ import React from 'react'
 function SearchBar({ searchTerm, setSearchTerm }) {
   return (
 <div className="mb-8">
-            <div className="relative max-w-md bg-[#F5F0F0] rounded-md">
+            <div className="relative max-w-md bg-[#F5F0F0]  rounded-md">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
